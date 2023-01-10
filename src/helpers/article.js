@@ -15,5 +15,14 @@ export function getTitlesById(articles) {
      *   text - thish should contain the article's title property
      * }
      */
+    let revisedArticles = [];
+    articles.map(item => {
+      let template = {};
+      template.id = item.id;
+      template.text = item.title;
+      revisedArticles.push(template);
+    })
+
+    return revisedArticles;
     
 }
