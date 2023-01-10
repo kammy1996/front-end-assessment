@@ -1,4 +1,5 @@
 const ARTICLE_ENDPOINT = "/api/articles";
+//Adding base URL here to make sure we call the right backend
 const BASE_URL = 'http://localhost:3000';
 
 export function getAllArticles() {
@@ -14,7 +15,7 @@ export function getAllArticles() {
     .then(response => { 
         if(response.ok) { 
           return Promise.resolve(response.json())
-        }
+        }``
         return Promise.reject("Something went wrong")
     })
     .catch(error => { 
