@@ -109,27 +109,32 @@
   .flex-tile { 
     border:1px solid black;
     border-radius:20px;
-    flex: 1;
-    min-width: calc(100% / 3);
+    flex-basis: calc(33.33% - 20px);
+    min-width: calc(33.33% - 20px);
+    max-width: calc(33.33% - 20px);
     margin:20px 0px;
   }
 
   .tile-container {
     display: flex;
     flex-wrap: wrap;
-    padding: 10px;    
+    justify-content: space-between; 
   }
 
   
   @media screen and (max-width: 1000px) {
     .flex-tile {
-      min-width: calc(100% / 2);
+      flex-basis: calc(50% - 20px);
+      min-width: calc(50% - 20px);
+      max-width: calc(50% - 20px);
     }
   }
 
   @media screen and (max-width: 768px) {
     .flex-tile {
+      flex-basis: 100%;
       min-width: 100%;
+      max-width: 100%;
     }
   }
 </style>
