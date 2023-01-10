@@ -12,10 +12,11 @@ export function getAllArticles() {
       method:"GET"
     })
     .then(response => { 
-      //Returning simple response array could be nested may be in response.data or response.result
-      return Promise.resolve(response)
+        if(response.ok) { 
+          return Promise.resolve(response.json())
+        }
+        return Promise.reject("Something went wrong")
     })
-    .then((res) => res.json())
     .catch(error => { 
       return Promise.reject(error)
     })
@@ -42,9 +43,10 @@ export function postNewArticle(article) {
         body: JSON.stringify(article)
       })
       .then((response) => { 
-        if(response.status === 200) { 
+        if(response.ok) { 
           return Promise.resolve(response)
-        }
+        } 
+        return Promise.reject("Something went wrong")
       })
       .catch(error => { 
         return Promise.reject(error)
@@ -57,7 +59,6 @@ export function postNewArticle(article) {
 }
 
 export function updateArticle(article) {
-    console.log("🚀 ~ file: article.js ~ line 60 ~ updateArticle ~ article", article.id)
     /* TODO:
      * Use the fetch API.
      * Make a PUT request.
@@ -76,9 +77,10 @@ export function updateArticle(article) {
         body: JSON.stringify(article)
       })
       .then((response) => { 
-        if(response.status === 200) { 
+        if(response.ok) { 
           return Promise.resolve(response)
         }
+        return Promise.reject("Something went wrong")
       })
       .catch(error => { 
         return Promise.reject(error)
@@ -107,9 +109,10 @@ export function deleteArticle(articleId) {
         method:"DELETE",
       })
       .then((response) => { 
-        if(response.status === 200) { 
+        if(response.ok) { 
           return Promise.resolve()
         }
+        return Promise.reject("Something went wrong")
       })
       .catch(error => { 
         return Promise.reject(error)

@@ -12,7 +12,9 @@ import {
     deleteArticle
 } from "../../src/services/article";
 
-const ARTICLE_ENDPOINT = "/api/articles";
+//Adding BASE_URL to the ARTICLE_POINT in test case file as it was failing multiple test cases;
+const BASE_URL = 'http://localhost:3000';
+const ARTICLE_ENDPOINT = `${BASE_URL}/api/articles`;
 
 suite("articleService", function() {
     suite("getAllArticles()", function() {
