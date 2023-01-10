@@ -19,6 +19,9 @@ export default {
         onDelete() {
             let that = this;
             deleteArticle(this.article.id).then(()=>{ that.$emit("refresh-articles"); });
+        },
+        onEdit() { 
+          this.$emit(`change-article-view`,`edit-article`)
         }
     }
 }
@@ -45,8 +48,13 @@ export default {
                 {{ article.body }}
             </div>
         </div>
-        <div v-if="articleHasId">
-            <button @click="onDelete">Delete Article</button>
+        <div class="action-btns">
+          <div v-if="articleHasId">
+              <button @click="onEdit">Edit Article</button>
+          </div>
+          <div v-if="articleHasId">
+              <button @click="onDelete">Delete Article</button>
+          </div>
         </div>
     </div>
 </template>
@@ -59,5 +67,13 @@ export default {
     .article-data {
         margin-left: .5em;
         text-indent: 1em;
+    }
+
+    .action-btns { 
+      display: flex;
+    }
+
+    .action-btns button { 
+      margin:10px;
     }
 </style>

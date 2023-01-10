@@ -4,6 +4,7 @@
     import FlexGrid from "Components/FlexGrid";
     import FlexTile from "Components/FlexTile";
     import FullArticle from "Components/FullArticle";
+    import EditArticle from "Components/EditArticle";
     import { getAllArticles } from "Services/article";
     import { getTitlesById } from "Helpers/article";
 
@@ -14,13 +15,16 @@
             FlexTile,
             FullArticle,
             TitleList,
-            NewArticle
+            NewArticle,
+            EditArticle
         },
         data() {
             return {
                 message: "Hello, World!",
                 articles: [],
-                selectedArticle: {}
+                selectedArticle: {},
+                currentView:'full-article',
+                originalArticle:{},
             }
         },
         computed: {
@@ -55,10 +59,18 @@
             selectArticle(id) {
                 for (let a = 0, l = this.articles.length; a < l; a++) {
                     if (this.articles[a].id === id) {
-                        this.selectedArticle = { ...this.articles[a] };
+                        this.selectedArticle = { ...this.articles[a] }; 
+                        //Creating deep copy of an article
+                        this.originalArticle = JSON.parse(JSON.stringify(this.selectedArticle))
                         break;
                     }
                 }
+            },
+            changeView(view) { 
+              this.currentView = view;
+            },
+            setPreviousValues() { 
+              this.selectedArticle = this.originalArticle;
             }
         }
     }
@@ -67,19 +79,57 @@
 <template>
     <div>
         <h1>{{ message }}</h1>
-        <flex-grid>
-            <flex-tile>
+        <flex-grid class="tile-container">
+            <flex-tile class="flex-tile">
                 <title-list ref="titleList"
-                            :titles="titles"
-                            @article-selected="selectArticle" />
+                  :titles="titles"
+                  @article-selected="selectArticle" />
             </flex-tile>
-            <flex-tile>
+            <flex-tile class="flex-tile"> 
                 <new-article @refresh-articles="refreshArticles" />
             </flex-tile>
-            <flex-tile>
-                <full-article @refresh-articles="refreshArticles"
-                              :article="selectedArticle" />
+            <flex-tile class="flex-tile" v-if="currentView === 'full-article'">
+                <full-article 
+                  @refresh-articles="refreshArticles"
+                  @change-article-view="changeView"
+                  :article="selectedArticle" />
+            </flex-tile>
+            <flex-tile class="flex-tile" v-else>
+                <edit-article
+                  @refresh-articles="refreshArticles"
+                  @change-article-view="changeView"
+                  @edit-article-cancelled="setPreviousValues"
+                  :article="selectedArticle" />
             </flex-tile>
         </flex-grid>
     </div>
 </template>
+
+<style >
+  .flex-tile { 
+    border:1px solid black;
+    border-radius:20px;
+    flex: 1;
+    min-width: calc(100% / 3);
+    margin:20px 0px;
+  }
+
+  .tile-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;    
+  }
+
+  
+  @media screen and (max-width: 1000px) {
+    .flex-tile {
+      min-width: calc(100% / 2);
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .flex-tile {
+      min-width: 100%;
+    }
+  }
+</style>
